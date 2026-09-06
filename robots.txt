@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://leejx12.github.io/mb-002-korea-door-to-door-trip-cost/sitemap.xml

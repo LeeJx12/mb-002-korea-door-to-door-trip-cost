@@ -1,0 +1,7 @@
+{
+  "name": "mb-002-korea-door-to-door-trip-cost",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": { "test": "node --test test/*.test.js" },
+  "devDependencies": { "jsdom": "26.1.0" }
+}
