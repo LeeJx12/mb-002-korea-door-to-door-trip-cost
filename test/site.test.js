@@ -58,6 +58,15 @@ describe('progressive decision flow and calculator regressions', () => {
     assert.match(doc.querySelector('#totals .lowest').textContent, /자차/);
   });
 
+  test('keyboard submit moves focus to the result heading', async () => {
+    const { dom, doc } = makeDom();
+    const button = doc.querySelector('#calc');
+    button.focus();
+    button.dispatchEvent(new dom.window.KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+    await new Promise(resolve => dom.window.requestAnimationFrame(resolve));
+    assert.equal(doc.activeElement.id, 'result-title');
+  });
+
   test('all three routes retain round-trip and one-way formula coverage', () => {
     const { doc } = makeDom();
     const expected = {
