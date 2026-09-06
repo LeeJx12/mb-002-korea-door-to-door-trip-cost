@@ -52,7 +52,8 @@ describe('progressive decision flow and calculator regressions', () => {
     assert.deepEqual([...doc.querySelectorAll('#totals .money')].map(x => x.textContent), ['166,333원', '269,200원', '138,000원']);
     doc.querySelector('#people').value = '4';
     doc.querySelector('#fuel').value = '1800';
-    doc.querySelector('#fuel').dispatchEvent(new doc.defaultView.Event('change', { bubbles: true }));
+    doc.querySelector('#fuel').dispatchEvent(new doc.defaultView.Event('input', { bubbles: true }));
+    assert.match(doc.querySelector('#fuel-help').textContent, /직접 수정/);
     doc.querySelector('#calc').click();
     assert.deepEqual([...doc.querySelectorAll('#totals .money')].map(x => x.textContent), ['173,000원', '508,400원', '246,000원']);
     assert.match(doc.querySelector('#totals .lowest').textContent, /자차/);
