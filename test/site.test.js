@@ -199,6 +199,13 @@ describe('source, action and accessible error contracts', () => {
 });
 
 describe('transport-neutral measurement', () => {
+  test('route acquisition links retain only allowlisted source buckets', () => {
+    const { events } = makeDom(`${base}?route=busan&src=route-busan`);
+    assert.equal(events.find(x => x.name === 'acquisition_view').payload.source_bucket, 'route-busan');
+    const unknown = makeDom(`${base}?route=busan&src=not-allowed`);
+    assert.equal(unknown.events.find(x => x.name === 'acquisition_view').payload.source_bucket, 'direct');
+  });
+
   test('events fire with allowlisted fields and unique-state dedupe', () => {
     const { doc, events } = makeDom();
     assert.equal(events.filter(x => x.name === 'acquisition_view').length, 1);
@@ -240,5 +247,49 @@ describe('responsive and accessibility release contract', () => {
     assert.ok(result.querySelector('#decision').compareDocumentPosition(result.querySelector('#totals')) & 4);
     assert.ok(result.querySelector('#totals').compareDocumentPosition(result.querySelector('#trust')) & 4);
     assert.ok(result.querySelector('#trust').compareDocumentPosition(result.querySelector('#result-action')) & 4);
+  });
+});
+
+describe('bounded acquisition experiment assets', () => {
+  test('the three maintained route pages are distinct and decision-complete', () => {
+    const titles = new Set();
+    for (const [route, source] of [['seoul-busan', 'route-busan'], ['seoul-gangneung', 'route-gangneung'], ['seoul-jeonju', 'route-jeonju']]) {
+      const html = fs.readFileSync(path.join(route, 'index.html'), 'utf8');
+      const title = html.match(/<title>([^<]+)<\/title>/)?.[1];
+      assert.ok(title);
+      titles.add(title);
+      assert.match(html, /"@type":"FAQPage"/);
+      assert.match(html, /2명/);
+      assert.match(html, /4명/);
+      assert.match(html, new RegExp(`src=${source}`));
+      assert.match(html, /letskorail\.com/);
+      assert.match(html, /kobus\.co\.kr/);
+    }
+    assert.equal(titles.size, 3);
+  });
+
+  test('route styles have mobile stacking and overflow protection', () => {
+    const css = fs.readFileSync('route-pages.css', 'utf8');
+    assert.match(css, /overflow-wrap:anywhere/);
+    assert.match(css, /@media\(max-width:600px\)/);
+    assert.match(css, /grid-template-columns:1fr/);
+    assert.match(css, /min-height:48px/);
+  });
+
+  test('sitemap, IndexNow and baseline declare the exact four-URL experiment', () => {
+    const sitemap = fs.readFileSync('sitemap.xml', 'utf8');
+    assert.equal((sitemap.match(/<url>/g) || []).length, 4);
+    assert.equal((sitemap.match(/<lastmod>2026-09-10<\/lastmod>/g) || []).length, 4);
+    const key = fs.readFileSync('8c8f3fba09134a62b0f63d8a82197d5c.txt', 'utf8').trim();
+    assert.equal(key, '8c8f3fba09134a62b0f63d8a82197d5c');
+    const indexNow = fs.readFileSync('scripts/indexnow.mjs', 'utf8');
+    assert.match(indexNow, /api\.indexnow\.org\/indexnow/);
+    assert.match(indexNow, /seoul-busan/);
+    assert.match(indexNow, /seoul-gangneung/);
+    assert.match(indexNow, /seoul-jeonju/);
+    const baseline = JSON.parse(fs.readFileSync('acquisition/baseline.json', 'utf8'));
+    assert.equal(baseline.classification, 'NO_DISTRIBUTION_EVIDENCE');
+    assert.equal(baseline.qualified_exposure_denominator, 0);
+    assert.equal(baseline.target, 100);
   });
 });

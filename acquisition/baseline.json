@@ -1,0 +1,30 @@
+{
+  "captured_at": "2026-09-10T03:25:00+09:00",
+  "classification": "NO_DISTRIBUTION_EVIDENCE",
+  "qualified_exposure_denominator": 0,
+  "public_search_snapshot": {
+    "method": "public site-prefix query through available search",
+    "mb002_urls_returned": 0,
+    "limitation": "A site query is incomplete and is not an impression report; this is not demand evidence."
+  },
+  "github_repository_traffic_14d": {
+    "views": 2,
+    "unique_visitors": 1,
+    "referrers": [{ "name": "github.com", "views": 1, "unique_visitors": 1 }],
+    "qualified": false,
+    "reason": "Repository visitors are not demonstrably travelers facing the route-cost decision."
+  },
+  "product_funnel": {
+    "events": ["acquisition_view", "comparison_start", "comparison_complete", "result_action"],
+    "transport": "local-only",
+    "aggregate_readable": false
+  },
+  "indexnow": {
+    "official_requirements_checked_at": "2026-09-10",
+    "key_location": "https://leejx12.github.io/mb-002-korea-door-to-door-trip-cost/8c8f3fba09134a62b0f63d8a82197d5c.txt",
+    "submission_receipt": null,
+    "counts_as_exposure": false
+  },
+  "next_checkpoint": "24-72 hours after a successful IndexNow receipt, using authenticated search-property impressions as the denominator.",
+  "target": 100
+}

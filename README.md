@@ -22,6 +22,10 @@ Each route has nine preset records with a source or transparent method, checked 
 
 The page defines allowlisted `acquisition_view`, `comparison_start`, `comparison_complete`, and `result_action` events. There is no external analytics transport. Tests inject an in-memory adapter; without one, the page only emits a development-friendly local `CustomEvent` and creates no identifier or network request.
 
+## Acquisition experiment
+
+[`acquisition/EXPERIMENT.md`](acquisition/EXPERIMENT.md) defines the active 24–72 hour, first-100-qualified-exposure experiment and its decision rules. The baseline is machine-readable in [`acquisition/baseline.json`](acquisition/baseline.json). Preview the exact four-URL IndexNow payload with `npm run acquisition:preview`; `npm run acquisition:submit` sends it once after the public key file is deployed. A successful IndexNow response is only a discovery receipt, never an impression or demand signal.
+
 ## Deployment
 
 Production uses free GitHub Pages at <https://leejx12.github.io/mb-002-korea-door-to-door-trip-cost/>. After pushing `main`, verify HTTP 200 and canonical/H1 content at the root and all three route URLs, then run one comparison per route and repeat responsive, keyboard, invalid-input, source-state, checklist, console, and network checks against the deployed commit.

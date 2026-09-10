@@ -2,6 +2,10 @@
   "name": "mb-002-korea-door-to-door-trip-cost",
   "version": "1.0.0",
   "private": true,
-  "scripts": { "test": "node --test" },
+  "scripts": {
+    "test": "node --test",
+    "acquisition:preview": "node scripts/indexnow.mjs",
+    "acquisition:submit": "node scripts/indexnow.mjs --submit"
+  },
   "devDependencies": { "jsdom": "26.1.0" }
 }
